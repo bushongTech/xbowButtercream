@@ -35,6 +35,7 @@ ipcMain.on('send-command', (event, command) => {
     // Send the command to your Python service running on port 7997
     let client = new net.Socket();
     client.connect(7997, '127.0.0.1', () => {
+        console.log('Connected to Python Service');
         client.write(JSON.stringify(command));
     });
 });

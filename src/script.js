@@ -1,6 +1,17 @@
 const { ipcRenderer } = require('electron');
 
-document.getElementById('update').addEventListener('click', () => {
+const elements = [
+    'sugar-speed',
+    'butter-pump',
+    'milk-pump',
+    'mixer-enable'
+];
+
+elements.forEach((element) => {
+    document.getElementById(element).addEventListener('change', sendCommand);
+});
+
+function sendCommand() {
     let sugarSpeed = document.getElementById('sugar-speed').value;
     let butterPump = document.getElementById('butter-pump').checked ? 1 : 0;
     let milkPump = document.getElementById('milk-pump').checked ? 1 : 0;
@@ -13,7 +24,7 @@ document.getElementById('update').addEventListener('click', () => {
         MlkPmp: milkPump,
         MXR: mixerEnable
     });
-});
+}
 
 
 // Receive the telemetry data from the main process
