@@ -4,6 +4,7 @@ import json
 import time 
 import queue
 
+
 HOST = "127.0.0.1"  # loop back on localhost
 TxPORT = 7887 # Port to listen for GUI commands
 RxPORT = 7997 # Port to report telemetry
