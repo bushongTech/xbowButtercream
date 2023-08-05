@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+input[type="number"] {
+    width: 50px;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #4CAF50; /* green */
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+.label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.telemetry {
+    margin-top: 20px;
+    font-size: 1.2em;
+}

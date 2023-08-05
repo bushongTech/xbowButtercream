@@ -1,0 +1,21 @@
+{
+  "name": "xbow",
+  "version": "1.0.0",
+  "description": "Buttercream",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "start-server": "python Buttercream.py",
+    "dev": "concurrently \"npm run start-server\" \"npm run start\""
+  },
+  "author": "Dan Bushong",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "electron": "^25.4.0",
+    "net": "^1.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
