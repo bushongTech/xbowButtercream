@@ -13,10 +13,10 @@ function createWindow() {
         }
     });
 
-    win.loadFile('index.html');
+    win.loadFile('src/index.html');
+    //dev tools
+    win.webContents.openDevTools();
 }
-
-app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -32,6 +32,7 @@ app.on('activate', () => {
 
 // Listen for control command messages from the renderer process (GUI)
 ipcMain.on('send-command', (event, command) => {
+    console.log(event, command);
     // Send the command to your Python service running on port 7997
     let client = new net.Socket();
     client.connect(7997, '127.0.0.1', () => {
