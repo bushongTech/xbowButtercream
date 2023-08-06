@@ -1,38 +1,58 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Buttercream Mixer</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>XBOW Buttercream Control Panel</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <h1>Buttercream Mixer Control Panel</h1>
 
-    <div id="display">
-        <h2>Display</h2>
+<body>
+    <h1>XBOW Buttercream Control Panel</h1>
+    <div class="controls">
+        <div class="control-item">
+            <label for="sugar-speed">Sugar Speed:</label>
+            <select id="sugar-speed">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div class="control-item">
+            <label for="butter-pump">Butter Pump:</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="butter-pump">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="control-item">
+            <label for="milk-pump">Milk Pump:</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="milk-pump">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="control-item">
+            <label for="mixer-enable">Mixer Enable:</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="mixer-enable">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="telemetry">
+        <h2>Telemetry Data</h2>
         <p id="timer">Mix Timer: 0</p>
         <p id="weight">Mixer Weight: 0 lbs</p>
         <p id="sugar-butter-ratio">Sugar to Butter Ratio: 0</p>
         <p id="mix-milk-ratio">Sugar/Butter Mix to Milk Ratio: 0</p>
     </div>
 
-    <div id="control">
-        <h2>Control</h2>
-        <label for="sugar-speed">Sugar Dispenser Speed (0-5):</label><br>
-        <input type="number" id="sugar-speed" name="sugar-speed" min="0" max="5"><br>
-
-        <input type="checkbox" id="butter-pump" name="butter-pump">
-        <label for="butter-pump">Butter Pump</label><br>
-
-        <input type="checkbox" id="milk-pump" name="milk-pump">
-        <label for="milk-pump">Milk Pump</label><br>
-
-        <input type="checkbox" id="mixer-enable" name="mixer-enable">
-        <label for="mixer-enable">Mixer Enable</label><br>
-
-        <button id="update">Update</button>
-    </div>
-
-    <script defer src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

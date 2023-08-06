@@ -18,8 +18,8 @@ function createWindow() {
     });
 
     win.loadFile('src/index.html');
-    //dev tools
-    win.webContents.openDevTools();
+    //dev tools, uncomment if needed
+    //win.webContents.openDevTools();
 }
 
 app.on('window-all-closed', () => {
@@ -62,7 +62,6 @@ function connectToPythonService() {
 
     // Listen for control command messages from the renderer process (GUI)
     ipcMain.on('send-command', (event, command) => {
-        console.log('Sending command to Python service:', command);
         client.write(JSON.stringify(command));
     });
 }
@@ -83,11 +82,8 @@ function connectToTelemetryService() {
     });
 
     telemetryClient.on('data', (data) => {
-        console.log('Raw data received from telemetry service:', data.toString());
-
         try {
             let telemetryData = JSON.parse(data);
-            console.log('Parsed telemetry data:', telemetryData);
             win.webContents.send('receive-telemetry', telemetryData);
         } catch (error) {
             console.error('Error parsing telemetry data:', error);
@@ -105,14 +101,6 @@ function spawnPythonProcess() {
 
     pythonProcess.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
-        try {
-            const receivedData = JSON.parse(data.toString());
-            if (receivedData.hasOwnProperty('MXR_LBS')) {
-                win.webContents.send('update-mixer-weight', receivedData.MXR_LBS);
-            }
-        } catch (err) {
-            console.log('Error parsing stdout JSON:', err);
-        }
     });
 
     pythonProcess.stderr.on('data', (data) => {

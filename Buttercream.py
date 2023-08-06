@@ -2,7 +2,6 @@ import socket
 from threading import Thread
 import json
 import time 
-import queue
 
 HOST = "127.0.0.1"  # loop back on localhost
 TxPORT = 7887 # Port to listen for GUI commands
@@ -16,10 +15,12 @@ milk_increments = [0, 0.05]
 butter_status = 0
 sugar_status = 0
 milk_status = 0
-mixer_status=0
+total_weight = 0
+mix_timer = 0
+sugar_butter_ratio = 0
+mix_milk_ratio = 0
+mixer_status = 0  # To keep track of the mixer status (0 for off, 1 for on)
 
-# forward latest weight data to telemetry
-total_weight = 0 
 
 def CheckReturn(dic, key):
     if key in dic.keys():
@@ -41,7 +42,7 @@ def SystemUpdate():
     if sugar_status in range(0,len(sugar_increments),1):
         total_weight = total_weight + sugar_increments[sugar_status] 
     if milk_status in range(0,len(milk_increments),1):
-        total_weight = total_weight + milk_increments[milk_status]
+        total_weight = total_weight + milk_increments[milk_status] 
 
 def CommandCenter(): # super generic server to receive commands, only handles commands
     global butter_status
@@ -50,7 +51,7 @@ def CommandCenter(): # super generic server to receive commands, only handles co
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, RxPORT))
         s.listen()                              # wait for GUI to connect
-        conn, _ = s.accept()  # accept connection
+        conn, addr = s.accept()                 # accept connection
         with conn:                              # receive connections
             print("Connection established.")
             while True:
@@ -77,7 +78,6 @@ def CommandCenter(): # super generic server to receive commands, only handles co
                     sugar_status = retVal      # check if command, update
                 
                 time.sleep(1)
-
 
 
 def TelemetryCenter():
@@ -113,13 +113,6 @@ def TelemetryCenter():
                 conn.sendall(payload.encode('utf-8'))
                 SystemUpdate()
                 time.sleep(1)
-
-
-
-
-
-
-
         
 def test_space_RX():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

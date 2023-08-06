@@ -1,36 +1,76 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-    padding: 20px;
+h1 {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-bottom: 30px;
 }
 
-input[type="number"] {
-    width: 50px;
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
-button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    background-color: #4CAF50; /* green */
-    color: white;
-    border: none;
-    cursor: pointer;
+.control-item {
+    width: 250px;
+    margin-bottom: 20px;
 }
 
-    button:hover {
-        background-color: #45a049;
-    }
-
-.label {
-    margin-right: 10px;
+.control-item label {
+    display: block;
+    font-size: 18px;
     font-weight: bold;
 }
 
+.control-item select {
+    width: 100%;
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 .telemetry {
-    margin-top: 20px;
-    font-size: 1.2em;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+
+.telemetry h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.telemetry p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.telemetry #timer {
+    color: #333;
+}
+
+.telemetry #weight {
+    color: #007bff;
+}
+
+.telemetry #sugar-butter-ratio,
+.telemetry #mix-milk-ratio {
+    color: #28a745;
+}
+
+.telemetry #sugar-butter-ratio::before,
+.telemetry #mix-milk-ratio::before {
+    content: "\2022"; /* Add bullet point before the ratio */
+    margin-right: 5px;
 }
