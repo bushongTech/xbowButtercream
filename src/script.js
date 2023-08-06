@@ -1,7 +1,6 @@
 const { ipcRenderer } = require('electron');
 
 const elements = [
-    'sugar-speed',
     'butter-pump',
     'milk-pump',
     'mixer-enable'
@@ -9,6 +8,24 @@ const elements = [
 
 elements.forEach((element) => {
     document.getElementById(element).addEventListener('change', sendCommand);
+});
+
+let sugarSpeed = 0;  // Initialize sugarSpeed to its default value
+
+document.getElementById('increase-speed').addEventListener('click', function () {
+    if (sugarSpeed < 5) {
+        sugarSpeed++;
+        document.getElementById('sugar-speed').innerText = sugarSpeed;
+        sendCommand();  // Call sendCommand to update after changing sugarSpeed
+    }
+});
+
+document.getElementById('decrease-speed').addEventListener('click', function () {
+    if (sugarSpeed > 0) {
+        sugarSpeed--;
+        document.getElementById('sugar-speed').innerText = sugarSpeed;
+        sendCommand();  // Call sendCommand to update after changing sugarSpeed
+    }
 });
 
 let mixerRunning = false;
@@ -31,7 +48,6 @@ function updateMixTimer() {
 }
 
 function sendCommand() {
-    let sugarSpeed = document.getElementById('sugar-speed').value;
     let butterPump = document.getElementById('butter-pump').checked ? 1 : 0;
     let milkPump = document.getElementById('milk-pump').checked ? 1 : 0;
     let mixerEnable = document.getElementById('mixer-enable').checked ? 1 : 0;

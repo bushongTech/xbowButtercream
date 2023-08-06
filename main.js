@@ -19,7 +19,7 @@ function createWindow() {
 
     win.loadFile('src/index.html');
     //dev tools, uncomment if needed
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
 }
 
 app.on('window-all-closed', () => {

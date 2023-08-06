@@ -9,40 +9,6 @@
 
 <body>
     <h1>XBOW Buttercream Control Panel</h1>
-    <div class="controls">
-        <div class="control-item">
-            <label for="sugar-speed">Sugar Speed:</label>
-            <select id="sugar-speed">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-        <div class="control-item">
-            <label for="butter-pump">Butter Pump:</label>
-            <label class="toggle-switch">
-                <input type="checkbox" id="butter-pump">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="control-item">
-            <label for="milk-pump">Milk Pump:</label>
-            <label class="toggle-switch">
-                <input type="checkbox" id="milk-pump">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="control-item">
-            <label for="mixer-enable">Mixer Enable:</label>
-            <label class="toggle-switch">
-                <input type="checkbox" id="mixer-enable">
-                <span class="slider"></span>
-            </label>
-        </div>
-    </div>
 
     <div class="telemetry">
         <h2>Telemetry Data</h2>
@@ -50,6 +16,50 @@
         <p id="weight">Mixer Weight: 0 lbs</p>
         <p id="sugar-butter-ratio">Sugar to Butter Ratio: 0</p>
         <p id="mix-milk-ratio">Sugar/Butter Mix to Milk Ratio: 0</p>
+    </div>
+
+    <div class="controls">
+
+        <div class="control-item">
+            <label for="sugar-speed">Sugar Speed:</label>
+            <div id="sugar-speed">0</div>
+            <button id="increase-speed">Increase Speed</button>
+            <button id="decrease-speed">Decrease Speed</button>
+        </div>
+
+        <div class="control-item">
+            <label for="butter-pump">Butter Pump:</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="butter-pump">
+                <span class="slider">
+                    <span class="off">Off</span>
+                    <span class="on">On</span>
+                </span>
+            </label>
+        </div>
+
+        <div class="control-item">
+            <label for="milk-pump">Milk Pump:</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="milk-pump">
+                <span class="slider">
+                    <span class="off">Off</span>
+                    <span class="on">On</span>
+                </span>
+            </label>
+        </div>
+
+        <div class="control-item">
+            <label for="mixer-enable">Mixer Enable:</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="mixer-enable">
+                <span class="slider">
+                    <span class="off">Off</span>
+                    <span class="on">On</span>
+                </span>
+            </label>
+        </div>
+
     </div>
 
     <script src="script.js"></script>
