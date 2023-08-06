@@ -18,7 +18,7 @@ function createWindow() {
     });
 
     win.loadFile('src/index.html');
-    //dev tools, uncomment if needed or just hit ctrl+i
+    //dev tools, uncomment if needed or just hit ctrl+shift+i
     //win.webContents.openDevTools();
 }
 
