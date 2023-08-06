@@ -15,11 +15,8 @@ milk_increments = [0, 0.05]
 butter_status = 0
 sugar_status = 0
 milk_status = 0
+# forward latest weight data to telemetry
 total_weight = 0
-mix_timer = 0
-sugar_butter_ratio = 0
-mix_milk_ratio = 0
-mixer_status = 0  # To keep track of the mixer status (0 for off, 1 for on)
 
 
 def CheckReturn(dic, key):
@@ -81,38 +78,19 @@ def CommandCenter(): # super generic server to receive commands, only handles co
 
 
 def TelemetryCenter():
-    global total_weight, butter_status, sugar_status, milk_status, mixer_status, mix_timer
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((HOST, TxPORT))
-        s.listen()
-        conn, addr = s.accept()                 # accept connection
-        with conn:
-            while True:
-                pay = {}
-                pay['MXR_LBS'] = total_weight
-                pay['MixTimer'] = mix_timer if mixer_status == 1 else 0
-
-                try:
-                    sugar_status_int = int(sugar_status)
-                except ValueError:
-                    sugar_status_int = 0
-                
-                try:
-                    butter_status_int = int(butter_status)
-                except ValueError:
-                    butter_status_int = 0
-
-                # Calculate the sugar to butter ratio
-                pay['SgrRatio'] = sugar_status_int / butter_status_int if butter_status_int != 0 else 0
-
-                # Calculate the sugar/butter mix to milk ratio
-                # Make sure that milk_status is not 0 to avoid division by zero
-                pay['MixRatio'] = (sugar_status_int + butter_status_int) / milk_status if milk_status != 0 else 0
-
-                payload = json.dumps(pay)
-                conn.sendall(payload.encode('utf-8'))
-                SystemUpdate()
-                time.sleep(1)
+    global total_weight
+    tx_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tx_socket.connect((HOST, TxPORT))
+    while True:
+        pay = {}
+        pay['MXR_LBS'] = total_weight   # create dict
+        payload = json.dumps(pay)
+        tx_socket.sendall(payload.encode('utf-8'))  # send payloa
+        SystemUpdate()
+        time.sleep(1)
+             
+        # check what is on
+        # generate update values
         
 def test_space_RX():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

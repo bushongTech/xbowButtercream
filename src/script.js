@@ -1,36 +1,36 @@
 const { ipcRenderer } = require('electron');
 
-const elements = [
-    'butter-pump',
-    'milk-pump',
-    'mixer-enable'
-];
-
-elements.forEach((element) => {
-    document.getElementById(element).addEventListener('change', sendCommand);
-});
-
-let sugarSpeed = 0;  // Initialize sugarSpeed to its default value
-
-document.getElementById('increase-speed').addEventListener('click', function () {
-    if (sugarSpeed < 5) {
-        sugarSpeed++;
-        document.getElementById('sugar-speed').innerText = sugarSpeed;
-        sendCommand();  // Call sendCommand to update after changing sugarSpeed
-    }
-});
-
-document.getElementById('decrease-speed').addEventListener('click', function () {
-    if (sugarSpeed > 0) {
-        sugarSpeed--;
-        document.getElementById('sugar-speed').innerText = sugarSpeed;
-        sendCommand();  // Call sendCommand to update after changing sugarSpeed
-    }
-});
-
 let mixerRunning = false;
 let mixStartTime;
 let mixTimerInterval;
+let sugarSpeed = 0;
+
+// Helper to update UI text
+function updateUI(elementId, text) {
+    document.getElementById(elementId).innerText = text;
+}
+
+// Attach event listeners for pump changes
+['butter-pump', 'milk-pump', 'mixer-enable'].forEach(id => {
+    document.getElementById(id).addEventListener('change', sendCommand);
+});
+
+// Increase & Decrease sugar speed
+document.getElementById('increase-speed').addEventListener('click', function () {
+    adjustSugarSpeed(1);
+});
+
+document.getElementById('decrease-speed').addEventListener('click', function () {
+    adjustSugarSpeed(-1);
+});
+
+function adjustSugarSpeed(adjustment) {
+    if ((sugarSpeed + adjustment) >= 0 && (sugarSpeed + adjustment) <= 5) {
+        sugarSpeed += adjustment;
+        updateUI('sugar-speed', sugarSpeed);
+        sendCommand();
+    }
+}
 
 function startMixTimer() {
     mixStartTime = new Date().getTime();
@@ -42,12 +42,15 @@ function stopMixTimer() {
 }
 
 function updateMixTimer() {
-    const currentTime = new Date().getTime();
-    const elapsedTime = Math.floor((currentTime - mixStartTime) / 1000);
-    document.getElementById('timer').innerText = `Mix Timer: ${elapsedTime} seconds`;
+    const elapsedTime = Math.floor((new Date().getTime() - mixStartTime) / 1000);
+
+    if (!isNaN(elapsedTime)) {
+        updateUI('timer', `Mix Timer: ${elapsedTime} seconds`);
+    }
 }
 
-function sendCommand() {
+
+function updateStatesAndTimer() {
     let butterPump = document.getElementById('butter-pump').checked ? 1 : 0;
     let milkPump = document.getElementById('milk-pump').checked ? 1 : 0;
     let mixerEnable = document.getElementById('mixer-enable').checked ? 1 : 0;
@@ -60,7 +63,12 @@ function sendCommand() {
         mixerRunning = false;
     }
 
-    // Send the control commands to the main process
+    return { butterPump, milkPump, mixerEnable };
+}
+
+function sendCommand() {
+    const { butterPump, milkPump, mixerEnable } = updateStatesAndTimer();
+
     ipcRenderer.send('send-command', {
         SgrDisp: sugarSpeed,
         BttrPmp: butterPump,
@@ -69,10 +77,9 @@ function sendCommand() {
     });
 }
 
-// Receive the telemetry data from the main process
 ipcRenderer.on('receive-telemetry', (event, data) => {
-    document.getElementById('timer').innerText = `Mix Timer: ${data.MXR} seconds`;
-    document.getElementById('weight').innerText = `Mixer Weight: ${data.MXR_LBS} lbs`;
-    document.getElementById('sugar-butter-ratio').innerText = `Sugar to Butter Ratio: ${data.SgrRatio}`;
-    document.getElementById('mix-milk-ratio').innerText = `Sugar/Butter Mix to Milk Ratio: ${data.MixMilkRatio}`;
+    updateUI('weight', `Mixer Weight: ${data.MXR_LBS} lbs`);
+    updateUI('timer', `Mix Timer: ${data.MixTimer} seconds`);
+    updateUI('sugar-butter-ratio', `Sugar to Butter Ratio: ${data.SgrRatio}`);
+    updateUI('mix-milk-ratio', `Sugar/Butter Mix to Milk Ratio: ${data.MixRatio}`);
 });

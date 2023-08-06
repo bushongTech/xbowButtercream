@@ -17,10 +17,11 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    gap: 20px; 
 }
 
 .control-item {
-    width: 250px;
+    width: calc(100% / 4 - 20px); 
     margin-bottom: 20px;
 }
 
@@ -39,41 +40,39 @@ h1 {
     }
 
 .telemetry {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 30px;
+    background-color: #f8f9fa; /* Light grey to distinguish from background */
+    padding: 25px;
+    border: 1px solid #e0e0e0; /* Slight border for definition */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow for depth */
+    width: 300px; /* Or adjust based on your design */
+    margin: 30px auto; /* Centering the telemetry if its container is full-width */
 }
 
-    .telemetry h2 {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    .telemetry p {
+    .telemetry div {
         font-size: 18px;
-        margin-bottom: 10px;
-    }
-
-    .telemetry #timer {
-        color: #333;
+        margin-bottom: 15px; /* Consistent spacing */
+        font-weight: 400; /* Normal font weight for regular text */
+        line-height: 1.4; /* Improved readability */
+        color: #333; /* Dark text for better readability */
     }
 
     .telemetry #weight {
-        color: #007bff;
+        color: #007bff; /* Keep the unique color for differentiation */
     }
 
     .telemetry #sugar-butter-ratio,
     .telemetry #mix-milk-ratio {
-        color: #28a745;
+        color: #28a745; /* Green color to emphasize ratios */
     }
 
         .telemetry #sugar-butter-ratio::before,
         .telemetry #mix-milk-ratio::before {
-            content: "\2022"; /* Add bullet point before the ratio */
+            content: "\2022"; /* Bullet point for additional visual emphasis */
             margin-right: 5px;
         }
+
+
 
 /* Toggle Switch Styles */
 .toggle-switch {
