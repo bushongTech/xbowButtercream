@@ -8,13 +8,13 @@ let sugarSpeed = 0;
 const rightRecipeSugToBud = {
     sugar: 9,
     butter: 1,
-    blendTime: 1
+    blendTime: 60
 }
 
 const rightRecipeMixToMilk = {
     sugBudMix: 58,
     milk: 1,
-    blendTime: 1
+    blendTime: 60
 }
 
 // Helper to update UI text
