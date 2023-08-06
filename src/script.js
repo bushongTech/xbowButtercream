@@ -61,13 +61,13 @@ function calculateAndDisplayRatios() {
     let mixMilkRatio;
 
     if (historicalButterWeight === 0) {
-        sugarButterRatio = "Undefined (No butter added)";
+        sugarButterRatio = "Ingredients Required";
     } else {
         sugarButterRatio = (historicalSugarWeight / historicalButterWeight).toFixed(2);
     }
 
     if (historicalMilkWeight === 0) {
-        mixMilkRatio = "Undefined (No milk added)";
+        mixMilkRatio = "Ingredients Required";
     } else {
         mixMilkRatio = ((historicalSugarWeight + historicalButterWeight) / historicalMilkWeight).toFixed(2);
     }
