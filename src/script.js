@@ -22,14 +22,18 @@ function sendCommand() {
         SgrDisp: sugarSpeed,
         BttrPmp: butterPump,
         MlkPmp: milkPump,
-        MXR: mixerEnable
+        MXR: mixerEnable,
+        // Additional properties for telemetry data
+        MixTimer: 0, // Replace with the actual mix timer value
+        SgrRatio: 0, // Replace with the actual sugar to butter ratio value
+        MixRatio: 0, // Replace with the actual sugar/butter mix to milk ratio value
     });
 }
 
 // Receive the telemetry data from the main process
 ipcRenderer.on('receive-telemetry', (event, data) => {
-    document.getElementById('timer').innerText = `Mix Timer: ${data.timer}`;
+    document.getElementById('timer').innerText = `Mix Timer: ${data.MixTimer}`;
     document.getElementById('weight').innerText = `Mixer Weight: ${data.MXR_LBS} lbs`;
-    document.getElementById('sugar-butter-ratio').innerText = `Sugar to Butter Ratio: ${data.sugarButterRatio}`;
-    document.getElementById('mix-milk-ratio').innerText = `Sugar/Butter Mix to Milk Ratio: ${data.mixMilkRatio}`;
+    document.getElementById('sugar-butter-ratio').innerText = `Sugar to Butter Ratio: ${data.SgrRatio}`;
+    document.getElementById('mix-milk-ratio').innerText = `Sugar/Butter Mix to Milk Ratio: ${data.MixRatio}`;
 });

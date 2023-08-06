@@ -16,6 +16,7 @@ milk_increments = [0, 0.05]
 butter_status = 0
 sugar_status = 0
 milk_status = 0
+mixer_status=0
 
 # forward latest weight data to telemetry
 total_weight = 0 
@@ -80,7 +81,7 @@ def CommandCenter(): # super generic server to receive commands, only handles co
 
 
 def TelemetryCenter():
-    global total_weight, butter_status, sugar_status, milk_status
+    global total_weight, butter_status, sugar_status, milk_status, mixer_status, mix_timer
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, TxPORT))
         s.listen()
@@ -88,14 +89,33 @@ def TelemetryCenter():
         with conn:
             while True:
                 pay = {}
-                pay['MXR_LBS'] = total_weight   
-                pay['SgrRatio'] = int(sugar_status) / int(butter_status) if int(butter_status) != 0 else 0
-                pay['MixRatio'] = (int(sugar_status) + int(butter_status)) / int(milk_status) if int(milk_status) != 0 else 0
+                pay['MXR_LBS'] = total_weight
+                pay['MixTimer'] = mix_timer if mixer_status == 1 else 0
+
+                try:
+                    sugar_status_int = int(sugar_status)
+                except ValueError:
+                    sugar_status_int = 0
+                
+                try:
+                    butter_status_int = int(butter_status)
+                except ValueError:
+                    butter_status_int = 0
+
+                # Calculate the sugar to butter ratio
+                pay['SgrRatio'] = sugar_status_int / butter_status_int if butter_status_int != 0 else 0
+
+                # Calculate the sugar/butter mix to milk ratio
+                # Make sure that milk_status is not 0 to avoid division by zero
+                pay['MixRatio'] = (sugar_status_int + butter_status_int) / milk_status if milk_status != 0 else 0
 
                 payload = json.dumps(pay)
                 conn.sendall(payload.encode('utf-8'))
                 SystemUpdate()
                 time.sleep(1)
+
+
+
 
 
 
