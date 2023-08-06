@@ -62,18 +62,11 @@ function connectToPythonService() {
 
     // Listen for control command messages from the renderer process (GUI)
     ipcMain.on('send-command', (event, command) => {
-        // If command is an object, send each key-value pair separately
-        if (typeof command === 'object' && command !== null) {
-            for (let [key, value] of Object.entries(command)) {
-                client.write(JSON.stringify({ [key]: value }));
-                console.log(`Sending command to Python service: {${key}: ${value}}`);
-            }
-        } else {
-            client.write(JSON.stringify(command));
-            console.log(`Sending command to Python service: ${command}`);
-        }
+        console.log('Sending command to Python service:', command);
+        client.write(JSON.stringify(command));
     });
 }
+
 
 // Function to handle the telemetry connection
 function connectToTelemetryService() {
@@ -90,8 +83,11 @@ function connectToTelemetryService() {
     });
 
     telemetryClient.on('data', (data) => {
+        console.log('Raw data received from telemetry service:', data.toString());
+
         try {
             let telemetryData = JSON.parse(data);
+            console.log('Parsed telemetry data:', telemetryData);
             win.webContents.send('receive-telemetry', telemetryData);
         } catch (error) {
             console.error('Error parsing telemetry data:', error);
@@ -102,12 +98,21 @@ function connectToTelemetryService() {
         console.log('Telemetry connection closed');
     });
 }
+
 function spawnPythonProcess() {
     // Modify the path as needed
-    const pythonProcess = spawn('python', ['Buttercream.py']);
+    pythonProcess = spawn('python', ['Buttercream.py']);
 
     pythonProcess.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
+        try {
+            const receivedData = JSON.parse(data.toString());
+            if (receivedData.hasOwnProperty('MXR_LBS')) {
+                win.webContents.send('update-mixer-weight', receivedData.MXR_LBS);
+            }
+        } catch (err) {
+            console.log('Error parsing stdout JSON:', err);
+        }
     });
 
     pythonProcess.stderr.on('data', (data) => {
