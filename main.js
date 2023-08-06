@@ -95,7 +95,7 @@ function connectToTelemetryService() {
 }
 function spawnPythonProcess() {
     // Modify the path as needed
-    const pythonProcess = spawn('python', ['./path_to_your_script/Buttercream.py']);
+    const pythonProcess = spawn('python', ['Buttercream.py']);
 
     pythonProcess.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
