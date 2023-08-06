@@ -30,15 +30,38 @@ app.on('activate', () => {
     }
 });
 
-// Listen for control command messages from the renderer process (GUI)
-ipcMain.on('send-command', (event, command) => {
-    // Send the command to your Python service running on port 7997
+// Connect to Python service running on port 7997
+function connectToPythonService() {
     let client = new net.Socket();
+
     client.connect(7997, '127.0.0.1', () => {
         console.log('Connected to Python Service');
+    });
+
+    client.on('data', (data) => {
+        console.log('Received data from Python service:', data.toString());
+    });
+
+    client.on('error', (error) => {
+        console.error('Error on the socket:', error, 'Retrying in 3 seconds');
+        client.destroy();
+        setTimeout(connectToPythonService, 3000);
+    });
+
+    client.on('end', () => {
+        console.log('Connection ended by the server');
+    });
+
+    client.on('close', () => {
+        console.log('Connection closed');
+    });
+    // Listen for control command messages from the renderer process (GUI)
+    ipcMain.on('send-command', (event, command) => {
         client.write(JSON.stringify(command));
     });
-});
+}
+
+
 
 // Function to handle the telemetry connection
 function connectToTelemetryService() {
@@ -69,7 +92,9 @@ function connectToTelemetryService() {
 }
 
 app.whenReady().then(() => {
-    createWindow();
+    connectToPythonService();
     connectToTelemetryService();
+    createWindow();
+    
 });
 
