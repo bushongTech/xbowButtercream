@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const net = require('net');
 
 let win;
+let client;
+let telemetryClient;
 
 function createWindow() {
     win = new BrowserWindow({
@@ -32,7 +34,7 @@ app.on('activate', () => {
 
 // Connect to Python service running on port 7997
 function connectToPythonService() {
-    let client = new net.Socket();
+    client = new net.Socket();
 
     client.connect(7997, '127.0.0.1', () => {
         console.log('Connected to Python Service');
@@ -65,7 +67,7 @@ function connectToPythonService() {
 
 // Function to handle the telemetry connection
 function connectToTelemetryService() {
-    let telemetryClient = new net.Socket();
+    telemetryClient = new net.Socket();
 
     telemetryClient.connect(7887, '127.0.0.1', () => {
         console.log('Connected to telemetry service');
@@ -98,3 +100,8 @@ app.whenReady().then(() => {
     
 });
 
+//Cut Connection when window is closing
+app.on('before-quit', () => {
+    if (client) client.end();
+    if (telemetryClient) telemetryClient.end();
+});
