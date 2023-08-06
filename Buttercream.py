@@ -79,18 +79,18 @@ def CommandCenter(): # super generic server to receive commands, only handles co
 
 def TelemetryCenter():
     global total_weight
-    tx_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    tx_socket.connect((HOST, TxPORT))
-    while True:
-        pay = {}
-        pay['MXR_LBS'] = total_weight   # create dict
-        payload = json.dumps(pay)
-        tx_socket.sendall(payload.encode('utf-8'))  # send payloa
-        SystemUpdate()
-        time.sleep(1)
-             
-        # check what is on
-        # generate update values
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind((HOST, TxPORT))
+        s.listen()
+        conn, addr = s.accept()                 # accept connection
+        with conn:
+            while True:
+                pay = {}
+                pay['MXR_LBS'] = total_weight
+                payload = json.dumps(pay)
+                conn.sendall(payload.encode('utf-8'))
+                SystemUpdate()
+                time.sleep(1)
         
 def test_space_RX():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

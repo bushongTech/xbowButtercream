@@ -79,7 +79,4 @@ function sendCommand() {
 
 ipcRenderer.on('receive-telemetry', (event, data) => {
     updateUI('weight', `Mixer Weight: ${data.MXR_LBS} lbs`);
-    updateUI('timer', `Mix Timer: ${data.MixTimer} seconds`);
-    updateUI('sugar-butter-ratio', `Sugar to Butter Ratio: ${data.SgrRatio}`);
-    updateUI('mix-milk-ratio', `Sugar/Butter Mix to Milk Ratio: ${data.MixRatio}`);
 });
