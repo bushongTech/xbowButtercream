@@ -5,6 +5,18 @@ let mixStartTime;
 let mixTimerInterval;
 let sugarSpeed = 0;
 
+const rightRecipeSugToBud = {
+    sugar: 9,
+    butter: 1,
+    blendTime: 1
+}
+
+const rightRecipeMixToMilk = {
+    sugBudMix: 58,
+    milk: 1,
+    blendTime: 1
+}
+
 // Helper to update UI text
 function updateUI(elementId, text) {
     document.getElementById(elementId).innerText = text;
@@ -78,5 +90,6 @@ function sendCommand() {
 }
 
 ipcRenderer.on('receive-telemetry', (event, data) => {
+
     updateUI('weight', `Mixer Weight: ${data.MXR_LBS} lbs`);
 });
