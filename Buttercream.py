@@ -4,7 +4,6 @@ import json
 import time 
 import queue
 
-
 HOST = "127.0.0.1"  # loop back on localhost
 TxPORT = 7887 # Port to listen for GUI commands
 RxPORT = 7997 # Port to report telemetry
@@ -91,9 +90,14 @@ def TelemetryCenter():
                 pay = {}
                 pay['MXR_LBS'] = total_weight   
                 payload = json.dumps(pay)
+
+                # print the payload before sending
+                print('Sending payload:', payload)
+
                 conn.sendall(payload.encode('utf-8'))  # send payload
                 SystemUpdate()
                 time.sleep(1)
+
 
 
         
