@@ -62,10 +62,16 @@ function connectToPythonService() {
 
     // Listen for control command messages from the renderer process (GUI)
     ipcMain.on('send-command', (event, command) => {
-        // Log the command received from the GUI
-        console.log("Received command from GUI:", command);
-        // Existing code to send command to Python service
-        client.write(JSON.stringify(command));
+        // If command is an object, send each key-value pair separately
+        if (typeof command === 'object' && command !== null) {
+            for (let [key, value] of Object.entries(command)) {
+                client.write(JSON.stringify({ [key]: value }));
+                console.log(`Sending command to Python service: {${key}: ${value}}`);
+            }
+        } else {
+            client.write(JSON.stringify(command));
+            console.log(`Sending command to Python service: ${command}`);
+        }
     });
 }
 
