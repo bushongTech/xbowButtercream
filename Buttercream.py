@@ -88,7 +88,9 @@ def TelemetryCenter():
         with conn:
             while True:
                 pay = {}
-                pay['MXR_LBS'] = total_weight   
+                pay['MXR_LBS'] = total_weight
+                pay['SgrRatio'] = sugar_status / butter_status if butter_status != 0 else 0
+                pay['MixRatio'] = (sugar_status + butter_status) / milk_status if milk_status != 0 else 0
                 payload = json.dumps(pay)
 
                 # print the payload before sending

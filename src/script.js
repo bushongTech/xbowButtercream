@@ -28,10 +28,8 @@ function sendCommand() {
 
 // Receive the telemetry data from the main process
 ipcRenderer.on('receive-telemetry', (event, data) => {
+    document.getElementById('timer').innerText = `Mix Timer: ${data.timer}`;
     document.getElementById('weight').innerText = `Mixer Weight: ${data.MXR_LBS} lbs`;
-
-    // Note: The following lines are not needed if the 'data' object doesn't have properties named 'timer', 'sugarButterRatio', and 'mixMilkRatio'.
-    // document.getElementById('timer').innerText = `Mix Timer: ${data.timer}`;
-    // document.getElementById('sugar-butter-ratio').innerText = `Sugar to Butter Ratio: ${data.sugarButterRatio}`;
-    // document.getElementById('mix-milk-ratio').innerText = `Sugar/Butter Mix to Milk Ratio: ${data.mixMilkRatio}`;
+    document.getElementById('sugar-butter-ratio').innerText = `Sugar to Butter Ratio: ${data.sugarButterRatio}`;
+    document.getElementById('mix-milk-ratio').innerText = `Sugar/Butter Mix to Milk Ratio: ${data.mixMilkRatio}`;
 });
