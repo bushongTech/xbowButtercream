@@ -144,22 +144,40 @@ input:checked + .slider .on {
 
 /* Sugar Speed Styles */
 #sugar-speed {
+    display: block; /* This will push elements after it to a new line */
     font-size: 24px;
     font-weight: bold;
-    margin: 10px 0;
-    text-align: center;
-}
-
-.control-item button {
-    font-size: 14px;
-    padding: 5px 10px;
-    border: 1px solid #ccc;
+    padding: 10px 15px;
+    background-color: #f3f4f6; /* A subtle gray */
     border-radius: 5px;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    margin: 10px 0; /* Adjusted for top and bottom margin */
+    text-align: center; /* Centered text */
 }
 
-    .control-item button:hover {
-        background-color: #e0e0e0;
-    }
+/* Button Styles */
+#increase-speed, #decrease-speed {
+    display: block; /* This makes each button take up its own line */
+    width: 100%; /* Ensures full width is taken */
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50; /* A greenish color for a positive action */
+    border: none;
+    cursor: pointer; /* Change cursor on hover to indicate interactivity */
+    transition: background-color 0.3s; /* Smooth transition for hover effects */
+    border-radius: 5px; /* Slightly rounded corners */
+    color: white; /* White text on colored button background */
+    margin: 5px 0; /* Spacing between buttons */
+}
+
+#decrease-speed {
+    background-color: #f44336; /* A reddish color for a negative action */
+}
+
+#increase-speed:hover {
+    background-color: #45a049; /* Slightly darker shade of green on hover */
+}
+
+#decrease-speed:hover {
+    background-color: #d32f2f; /* Slightly darker shade of red on hover */
+}
+

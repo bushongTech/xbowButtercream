@@ -18,8 +18,8 @@ function createWindow() {
     });
 
     win.loadFile('src/index.html');
-    //dev tools, uncomment if needed
-    win.webContents.openDevTools();
+    //dev tools, uncomment if needed or just hit ctrl+i
+    //win.webContents.openDevTools();
 }
 
 app.on('window-all-closed', () => {
