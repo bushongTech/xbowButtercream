@@ -80,7 +80,7 @@ def CommandCenter(): # super generic server to receive commands, only handles co
 
 
 def TelemetryCenter():
-    global total_weight
+    global total_weight, butter_status, sugar_status, milk_status
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, TxPORT))
         s.listen()
@@ -88,17 +88,15 @@ def TelemetryCenter():
         with conn:
             while True:
                 pay = {}
-                pay['MXR_LBS'] = total_weight
-                pay['SgrRatio'] = sugar_status / butter_status if butter_status != 0 else 0
-                pay['MixRatio'] = (sugar_status + butter_status) / milk_status if milk_status != 0 else 0
+                pay['MXR_LBS'] = total_weight   
+                pay['SgrRatio'] = int(sugar_status) / int(butter_status) if int(butter_status) != 0 else 0
+                pay['MixRatio'] = (int(sugar_status) + int(butter_status)) / int(milk_status) if int(milk_status) != 0 else 0
+
                 payload = json.dumps(pay)
-
-                # print the payload before sending
-                print('Sending payload:', payload)
-
-                conn.sendall(payload.encode('utf-8'))  # send payload
+                conn.sendall(payload.encode('utf-8'))
                 SystemUpdate()
                 time.sleep(1)
+
 
 
 
