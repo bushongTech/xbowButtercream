@@ -1,9 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const net = require('net');
+const { spawn } = require('child_process');
 
 let win;
 let client;
 let telemetryClient;
+let pythonProcess;
 
 function createWindow() {
     win = new BrowserWindow({
@@ -57,13 +59,12 @@ function connectToPythonService() {
     client.on('close', () => {
         console.log('Connection closed');
     });
+
     // Listen for control command messages from the renderer process (GUI)
     ipcMain.on('send-command', (event, command) => {
         client.write(JSON.stringify(command));
     });
 }
-
-
 
 // Function to handle the telemetry connection
 function connectToTelemetryService() {
@@ -94,14 +95,19 @@ function connectToTelemetryService() {
 }
 
 app.whenReady().then(() => {
-    connectToPythonService();
-    connectToTelemetryService();
-    createWindow();
-    
+    spawnPythonProcess();
+    // Wait for Python process to start
+    setTimeout(() => {
+        connectToPythonService();
+        connectToTelemetryService();
+        createWindow();
+    }, 3000); // delay of 3 seconds
 });
+
 
 //Cut Connection when window is closing
 app.on('before-quit', () => {
     if (client) client.end();
     if (telemetryClient) telemetryClient.end();
+    pythonProcess.kill();
 });
