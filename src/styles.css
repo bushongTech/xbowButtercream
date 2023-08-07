@@ -40,16 +40,22 @@ h1 {
         border: 1px solid #ccc;
         border-radius: 5px;
     }
-.telemetry {
-    width: 100%;
-    background-color: #f3f4f6;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+.dashboard {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: start;
+    gap: 20px;
+    padding: 20px;
+}
+
+.telemetry {
+    flex: 1;
+    max-width: calc(33.33% - 20px); /* It will occupy 1/3 of the space minus the gap */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f3f4f6;
 }
 
     .telemetry div {
@@ -78,6 +84,40 @@ h1 {
         width: 0;
         height: 0;
     }
+
+.plant-visualization {
+    position: relative; /* To allow positioning of children with respect to this container */
+    flex: 2;
+    height: 100%; /* To ensure it takes up the full height of the dashboard */
+}
+#bowl {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Center the image horizontally */
+}
+
+#mix {
+    position: absolute;
+    bottom: 30px; /* Adjust this value */
+    left: 50%;
+    transform: translateX(-50%); /* Center the image horizontally */
+}
+
+#butter, #sugar, #milk {
+    position: absolute;
+    top: 0;
+    /* Adjust 'left' values so they are spaced evenly, e.g. left: 20%, left: 50%, left: 80% */
+}
+    .plant-visualization img {
+        width: 50px; /* Adjust size as needed */
+        height: 50px; /* Adjust size as needed */
+        transition: transform 0.3s;
+    }
+
+        .plant-visualization img:hover {
+            transform: scale(1.1); /* Add a slight scale effect on hover */
+        }
 
 .slider {
     position: absolute;

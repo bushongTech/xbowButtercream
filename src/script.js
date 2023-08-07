@@ -26,14 +26,44 @@ function updateUI(elementId, text) {
     });
 });
 
+let mixerInterval;
+let mixDirection = 1; // to determine the direction of the movement (1 is right, -1 is left)
+const MIX_MOVE_AMOUNT = 10; // Number of pixels to move the mixer in one interval
+const MIX_MAX_OFFSET = 50; // Maximum offset from the center
+
 document.getElementById('mixer-enable').addEventListener('change', function () {
+
     if (document.getElementById('mixer-enable').checked && !mixerRunning) {
         startMixTimer();
         mixerRunning = true;
+
+        // Start the animation
+        const mixElement = document.getElementById('mix');
+        mixerInterval = setInterval(() => {
+            // Get current left value
+            let currentLeft = parseInt(getComputedStyle(mixElement).left);
+            let newLeft = currentLeft + (MIX_MOVE_AMOUNT * mixDirection);
+
+            // Check if the mixer has reached its maximum offset, if so reverse the direction
+            if (newLeft <= window.innerWidth / 2 - MIX_MAX_OFFSET || newLeft >= window.innerWidth / 2 + MIX_MAX_OFFSET) {
+                mixDirection = -mixDirection;
+            }
+
+            // Set the new left value
+            mixElement.style.left = newLeft + "px";
+        }, 100);
+
     } else if (!document.getElementById('mixer-enable').checked && mixerRunning) {
         stopMixTimer();
         mixerRunning = false;
+
+        // Stop the animation
+        clearInterval(mixerInterval);
+
+        // Reset the mixer's position to the center
+        document.getElementById('mix').style.left = "50%";
     }
+
     sendCommand();
 });
 
