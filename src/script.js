@@ -181,19 +181,6 @@ function updateStatesAndTimer() {
 function sendCommand() {
     const butterPump = document.getElementById('butter-pump').checked ? 1 : 0;
     const milkPump = document.getElementById('milk-pump').checked ? 1 : 0;
-    const { mixerEnable } = updateStatesAndTimer();  // Update timer status based on mixer state
-
-    ipcRenderer.send('send-command', {
-        SgrDisp: sugarSpeed,
-        BttrPmp: butterPump,
-        MlkPmp: milkPump,
-        MXR: mixerEnable
-    });
-}
-
-function sendCommand() {
-    const butterPump = document.getElementById('butter-pump').checked ? 1 : 0;
-    const milkPump = document.getElementById('milk-pump').checked ? 1 : 0;
     const mixerEnable = document.getElementById('mixer-enable').checked ? 1 : 0;
 
     ipcRenderer.send('send-command', {
@@ -205,7 +192,8 @@ function sendCommand() {
 }
 
 ipcRenderer.on('receive-telemetry', (event, data) => {
-    updateUI('weight', `Mixer Weight: ${data.MXR_LBS} lbs`);
+    const roundedWeight = parseFloat(data.MXR_LBS).toFixed(2)
+    updateUI('weight', `Mixer Weight: ${roundedWeight} lbs`);
     updateHistoricalWeights();
     calculateAndDisplayRatios();  // Ensure the ratio updates when telemetry data is received
 });
