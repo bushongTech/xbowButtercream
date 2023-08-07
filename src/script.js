@@ -67,6 +67,33 @@ document.getElementById('mixer-enable').addEventListener('change', function () {
     sendCommand();
 });
 
+const butter = document.getElementById('butter');
+const butterPumpToggle = document.getElementById('butter-pump'); // assuming this is the ID of your butter pump toggle
+
+butterPumpToggle.addEventListener('change', function () {
+    if (butterPumpToggle.checked) {
+        // Moving butter to the bowl (adjust values as necessary)
+        butter.style.bottom = '100px'; // This moves the butter closer to the bowl
+    } else {
+        // Moving butter back to its original position
+        butter.style.bottom = '200px'; // This is its original position
+    }
+});
+
+// Get the milk SVG and the milk pump toggle
+const milkSVG = document.getElementById('milk');
+const milkPumpToggle = document.getElementById('milk-pump');
+
+// Listen for changes on the milk pump toggle
+milkPumpToggle.addEventListener('change', function () {
+    if (milkPumpToggle.checked) {
+        // Move milk SVG closer to the bowl when toggled ON
+        milkSVG.style.top = '100px'; // Adjust value as necessary to get desired position
+    } else {
+        // Return milk SVG to original position when toggled OFF
+        milkSVG.style.top = '10px';
+    }
+});
 
 // Increase & Decrease sugar speed
 document.getElementById('increase-speed').addEventListener('click', function () {

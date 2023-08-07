@@ -41,36 +41,6 @@ h1 {
         border-radius: 5px;
     }
 
-.dashboard {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    gap: 20px;
-    padding: 20px;
-}
-
-.telemetry {
-    flex: 1;
-    max-width: calc(33.33% - 20px); /* It will occupy 1/3 of the space minus the gap */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #f3f4f6;
-}
-
-    .telemetry div {
-        padding: 10px;
-        font-size: 18px;
-        color: #333;
-        border-bottom: 1px solid #ccc;
-        margin-bottom: 10px;
-    }
-
-        .telemetry div:last-child {
-            border-bottom: none;
-        }
-
-
 /* Toggle Switch Styles */
 .toggle-switch {
     position: relative;
@@ -85,39 +55,80 @@ h1 {
         height: 0;
     }
 
-.plant-visualization {
-    position: relative; /* To allow positioning of children with respect to this container */
-    flex: 2;
-    height: 100%; /* To ensure it takes up the full height of the dashboard */
+.dashboard {
+    display: flex;
+    align-items: stretch; /* This makes sure that the height of both children (telemetry & plant-visualization) is the same */
+    gap: 30px; /* Space between telemetry and plant-visualization */
 }
+
+.telemetry {
+    flex: 1; /* Takes up 1/3 of the space of its parent (.dashboard) */
+    background-color: #f3f4f6;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+    .telemetry > div {
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+.plant-visualization {
+    flex: 2; /* Takes up 2/3 of the space of its parent (.dashboard) */
+    background-color: #e8e8e8;
+    border-radius: 5px;
+    position: relative; /* So the images inside it can be positioned relative to it */
+    overflow: hidden; /* In case any images go outside the boundaries, they won't show */
+}
+
 #bowl {
+    width: 200px;
+    height: auto; /* This maintains the SVG's aspect ratio */
     position: absolute;
-    bottom: 0;
+    bottom: 0px; /* Positioning it near the bottom */
     left: 50%;
-    transform: translateX(-50%); /* Center the image horizontally */
+    transform: translateX(-50%); /* This centers the image horizontally */
+}
+
+#mix, #butter, #sugar, #milk {
+    width: 50px;
+    height: auto; /* This maintains the SVG's aspect ratio */
+    position: absolute; /* Allows you to position the SVGs precisely within the plant-visualization div */
 }
 
 #mix {
-    position: absolute;
-    bottom: 30px; /* Adjust this value */
+    bottom: 140px; /* Adjust this value to position the mix SVG right above the bowl. Value might need slight tweaking depending on the exact dimensions of your SVGs */
     left: 50%;
-    transform: translateX(-50%); /* Center the image horizontally */
+    transform: translateX(-50%); /* This centers the image horizontally */
 }
 
-#butter, #sugar, #milk {
+#butter {
+    bottom: 220px; /* This was previously the position for #mix */
+    left: 50%;
+    transform: translateX(-50%); /* This centers the image horizontally */
+    transition: bottom 1s ease-in-out;
+}
+
+#sugar {
+    top: 10px; /* Adjust to your desired distance from the top */
+    left: calc(33.33% - 25px); /* Centers it roughly in the left third of the container */
+    transition: bottom 1s ease-in-out;
+}
+
+#milk {
+    top: 10px; /* Initial position from the top */
+    left: calc(66.66% - 25px); /* Roughly in the right third of the container */
     position: absolute;
-    top: 0;
-    /* Adjust 'left' values so they are spaced evenly, e.g. left: 20%, left: 50%, left: 80% */
+    width: 50px;
+    height: auto; /* Maintains the SVG's aspect ratio */
+    transition: top 1s ease; /* This adds a smooth transition for the movement */
 }
-    .plant-visualization img {
-        width: 50px; /* Adjust size as needed */
-        height: 50px; /* Adjust size as needed */
-        transition: transform 0.3s;
-    }
 
-        .plant-visualization img:hover {
-            transform: scale(1.1); /* Add a slight scale effect on hover */
-        }
 
 .slider {
     position: absolute;
